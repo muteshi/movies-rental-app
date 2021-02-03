@@ -1,9 +1,15 @@
 import React, { Component } from "react";
 import { getMovies } from "../../services/fakeMovieService";
+import { paginate } from "../../utils/paginate";
 import Like from "../common/like";
+import Pagination from "../common/pagination";
 
 class Movies extends Component {
-  state = { movies: [] };
+  state = {
+    movies: [],
+    itemsPerPage: 4,
+    currentPage: 1,
+  };
 
   componentDidMount() {
     this.setState({ movies: getMovies() });
@@ -21,11 +27,17 @@ class Movies extends Component {
     this.setState({ movies });
   };
 
-  render() {
-    const { movies } = this.state;
-    console.log("RENDERING");
+  handlePageChange = (page) => {
+    this.setState({ currentPage: page });
+  };
 
-    const tableRows = movies.map((movie) => (
+  render() {
+    const { movies, itemsPerPage, currentPage } = this.state;
+    // console.log("RENDERING");
+
+    const paginatedMovies = paginate(movies, currentPage, itemsPerPage);
+
+    const tableRows = paginatedMovies.map((movie) => (
       <tr key={movie._id}>
         <td>{movie.title}</td>
         <td>{movie.genre.name}</td>
@@ -62,6 +74,12 @@ class Movies extends Component {
             </thead>
             <tbody>{tableRows}</tbody>
           </table>
+          <Pagination
+            itemsPerPage={itemsPerPage}
+            itemsCount={movies.length}
+            pageClicked={currentPage}
+            onPageChange={this.handlePageChange}
+          />
         </React.Fragment>
       ) : (
         <p>No movies in database</p>
