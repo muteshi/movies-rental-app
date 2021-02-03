@@ -1,7 +1,24 @@
 import React from "react";
 import Like from "./common/like";
 
-const MoviesTable = ({ paginatedMovies, onLike, onDelete }) => {
+const MoviesTable = ({
+  paginatedMovies,
+  onLike,
+  onDelete,
+  onSort,
+  sortColumn,
+}) => {
+  const raiseSort = (path) => {
+    let sortCol = { ...sortColumn };
+    if (sortCol.path === path)
+      sortCol = sortCol.order === "asc" ? "desc" : "asc";
+    else {
+      sortCol.path = path;
+      sortCol.order = "asc";
+    }
+    onSort(sortCol);
+  };
+
   const tableRows = paginatedMovies.map((movie) => (
     <tr key={movie._id}>
       <td>{movie.title}</td>
@@ -26,10 +43,18 @@ const MoviesTable = ({ paginatedMovies, onLike, onDelete }) => {
     <table className="table table-bordered ">
       <thead>
         <tr>
-          <th scope="col">Title</th>
-          <th scope="col">Genre</th>
-          <th scope="col">Stock</th>
-          <th scope="col">Rate</th>
+          <th onClick={() => raiseSort("title")} scope="col">
+            Title
+          </th>
+          <th onClick={() => raiseSort("genre.name")} scope="col">
+            Genre
+          </th>
+          <th onClick={() => raiseSort("numberInStock")} scope="col">
+            Stock
+          </th>
+          <th onClick={() => raiseSort("dailyRentalRate")} scope="col">
+            Rate
+          </th>
           <th scope="col">Like</th>
           <th scope="col">Action</th>
         </tr>

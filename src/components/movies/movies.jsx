@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import _ from "lodash";
+
 import { getGenres } from "../../services/fakeGenreService";
 import { getMovies } from "../../services/fakeMovieService";
 import { paginate } from "../../utils/paginate";
@@ -13,6 +15,7 @@ class Movies extends Component {
     currentPage: 1,
     movieCategories: [],
     selectedCategory: "All movies",
+    sortColumn: { path: "title", order: "asc" },
   };
 
   componentDidMount() {
@@ -45,6 +48,10 @@ class Movies extends Component {
     this.setState({ selectedCategory: categoryName, currentPage: 1 });
   };
 
+  handleSort = (sortColumn) => {
+    this.setState({ sortColumn });
+  };
+
   render() {
     const {
       movies,
@@ -52,6 +59,7 @@ class Movies extends Component {
       currentPage,
       movieCategories,
       selectedCategory,
+      sortColumn,
     } = this.state;
     // console.log("RENDERING");
 
@@ -60,7 +68,13 @@ class Movies extends Component {
         ? movies
         : movies.filter((movie) => movie.genre.name === selectedCategory);
 
-    const paginatedMovies = paginate(filteredMovies, currentPage, itemsPerPage);
+    const sortedMovies = _.orderBy(
+      filteredMovies,
+      [sortColumn.path],
+      [sortColumn.order]
+    );
+
+    const paginatedMovies = paginate(sortedMovies, currentPage, itemsPerPage);
 
     let moviesTable =
       movies.length !== 0 ? (
@@ -82,6 +96,8 @@ class Movies extends Component {
                 paginatedMovies={paginatedMovies}
                 onLike={this.handleLike}
                 onDelete={this.handleDelete}
+                onSort={this.handleSort}
+                sortColumn={sortColumn}
               />
               <Pagination
                 itemsPerPage={itemsPerPage}
