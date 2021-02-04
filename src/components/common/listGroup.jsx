@@ -4,11 +4,9 @@ const listGroup = ({
   categories,
   selectedCategory,
   onCategorySelect,
-  itemsPerCategory,
   textProperty,
   valueProperty,
 }) => {
-  console.log(itemsPerCategory);
   const listItems = categories.map((category) => {
     const classes =
       category.name === selectedCategory

@@ -1,5 +1,7 @@
 import React from "react";
+import Delete from "./common/delete";
 import Like from "./common/like";
+import Table from "./common/table";
 
 const MoviesTable = ({
   paginatedMovies,
@@ -8,59 +10,34 @@ const MoviesTable = ({
   onSort,
   sortColumn,
 }) => {
-  const raiseSort = (path) => {
-    let sortCol = { ...sortColumn };
-    if (sortCol.path === path)
-      sortCol = sortCol.order === "asc" ? "desc" : "asc";
-    else {
-      sortCol.path = path;
-      sortCol.order = "asc";
-    }
-    onSort(sortCol);
-  };
-
-  const tableRows = paginatedMovies.map((movie) => (
-    <tr key={movie._id}>
-      <td>{movie.title}</td>
-      <td>{movie.genre.name}</td>
-      <td>{movie.numberInStock}</td>
-      <td>{movie.dailyRentalRate}</td>
-      <td>
+  const columns = [
+    { path: "title", label: "Title" },
+    { path: "genre.name", label: "Genre" },
+    { path: "numberInStock", label: "Stock" },
+    { path: "dailyRentalRate", label: "Rate" },
+    {
+      path: null,
+      label: "Like",
+      content: (movie) => (
         <Like like={movie.liked} onLike={() => onLike(movie._id)} />
-      </td>
-      <td>
-        <i
-          className="fa fa-trash-o"
-          aria-hidden="true"
-          onClick={() => onDelete(movie._id)}
-          style={{ color: "red", cursor: "pointer" }}
-        />
-      </td>
-    </tr>
-  ));
+      ),
+    },
+    {
+      path: null,
+      label: "Action",
+      content: (movie) => <Delete onDelete={() => onDelete(movie)} />,
+    },
+  ];
 
   return (
-    <table className="table table-bordered ">
-      <thead>
-        <tr>
-          <th onClick={() => raiseSort("title")} scope="col">
-            Title
-          </th>
-          <th onClick={() => raiseSort("genre.name")} scope="col">
-            Genre
-          </th>
-          <th onClick={() => raiseSort("numberInStock")} scope="col">
-            Stock
-          </th>
-          <th onClick={() => raiseSort("dailyRentalRate")} scope="col">
-            Rate
-          </th>
-          <th scope="col">Like</th>
-          <th scope="col">Action</th>
-        </tr>
-      </thead>
-      <tbody>{tableRows}</tbody>
-    </table>
+    <Table
+      data={paginatedMovies}
+      columns={columns}
+      onDelete={onDelete}
+      onLike={onLike}
+      sortColumn={sortColumn}
+      onSort={onSort}
+    />
   );
 };
 
