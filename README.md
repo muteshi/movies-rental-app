@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
@@ -68,3 +69,10 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+=======
+# Movies rental application
+A simple react js movie rental application
+- Clean reusable code
+- Built using Bootstrap 4.6 and ReactJs
+- Browsing this repo you will find many reusable components which you can quickly plug into your existing application
+>>>>>>> c5a17135b7308d30dc5c633609bdbb628829dba2
