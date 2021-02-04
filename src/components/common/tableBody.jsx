@@ -2,6 +2,8 @@ import React from "react";
 import _ from "lodash";
 
 const TableBody = ({ data, columns }) => {
+  console.log("Table body rendering");
+
   const renderCell = (item, column) => {
     if (column.content) return column.content(item);
     return _.get(item, column.path);
@@ -24,4 +26,4 @@ TableBody.defaultProps = {
   columnKey: "label",
 };
 
-export default TableBody;
+export default React.memo(TableBody);

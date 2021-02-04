@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import Delete from "./common/delete";
 import Like from "./common/like";
 import Table from "./common/table";
@@ -11,8 +12,17 @@ const MoviesTable = ({
   sortColumn,
 }) => {
   const columns = [
-    { path: "title", label: "Title" },
-    { path: "genre.name", label: "Genre" },
+    {
+      path: "title",
+      label: "Title",
+      content: (movie) => (
+        <Link to={`/movies/${movie._id}`}>{movie.title}</Link>
+      ),
+    },
+    {
+      path: "genre.name",
+      label: "Genre",
+    },
     { path: "numberInStock", label: "Stock" },
     { path: "dailyRentalRate", label: "Rate" },
     {
@@ -25,7 +35,7 @@ const MoviesTable = ({
     {
       path: null,
       label: "Action",
-      content: (movie) => <Delete onDelete={() => onDelete(movie)} />,
+      content: (movie) => <Delete onDelete={onDelete} movie={movie} />,
     },
   ];
 

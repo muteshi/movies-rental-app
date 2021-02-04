@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
 const pagination = ({
   itemsCount,
@@ -25,27 +26,28 @@ const pagination = ({
           className={pageClicked === 1 ? "page-item disabled" : "page-item"}
           style={prevBtnMouseClasses}
         >
-          <a
+          <Link
+            to=""
             className="page-link"
             tabIndex="-1"
             onClick={() => onPageChange(pageClicked - 1)}
-            // aria-disabled={pageClicked === 1 ? "true" : "false"}
           >
             Previous
-          </a>
+          </Link>
         </li>
         {pages.map((page) => (
           <li
             className={page === pageClicked ? "page-item active" : "page-item"}
             key={page}
           >
-            <a
+            <Link
+              to=""
               className="page-link"
               onClick={() => onPageChange(page)}
               style={{ cursor: "pointer" }}
             >
               {page}
-            </a>
+            </Link>
           </li>
         ))}
 
@@ -57,12 +59,13 @@ const pagination = ({
           }
           style={nextBtnMouseClasses}
         >
-          <a
+          <Link
+            to=""
             className="page-link"
             onClick={() => onPageChange(pageClicked + 1)}
           >
             Next
-          </a>
+          </Link>
         </li>
       </ul>
     </nav>
