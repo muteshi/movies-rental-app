@@ -1,4 +1,5 @@
 import Customers from "../components/customers";
+import LoginForm from "../components/loginForm";
 import MovieForm from "../components/movieForm";
 import Movies from "../components/movies/movies";
 import NotFound from "../components/notFound";
@@ -19,5 +20,11 @@ export const MENUS = [
     component: Customers,
   },
   { label: "Rentals", id: "rentals", path: "/rentals", component: Rentals },
+  {
+    label: "Login",
+    id: "login-form",
+    path: "/login",
+    component: LoginForm,
+  },
   { label: null, id: "not-found", path: "/not-found", component: NotFound },
 ];
