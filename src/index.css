@@ -6,7 +6,10 @@ body {
 .clickable {
   cursor: pointer;
 }
-
+button:disabled {
+  cursor: not-allowed;
+  pointer-events: all !important;
+}
 .auth {
   box-shadow: 0 2px 3px #ccc;
   border: 1px solid #eeeeee;
