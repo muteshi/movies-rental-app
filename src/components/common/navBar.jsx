@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { MENUS } from "../../constants/menus";
+import Search from "./searchBar";
 
-const NavBar = () => {
+const NavBar = ({ data }) => {
   const [activeMenu, setActiveMenu] = useState("Movies");
 
   const handleClick = (menu) => {
@@ -12,7 +13,7 @@ const NavBar = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light mb-5">
       <Link className="navbar-brand" to="/">
-        App
+        App Name
       </Link>
       <button
         className="navbar-toggler"
@@ -47,6 +48,7 @@ const NavBar = () => {
             return null;
           })}
         </ul>
+        <Search searchData={data} />
       </div>
     </nav>
   );

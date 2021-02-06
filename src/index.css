@@ -16,3 +16,8 @@ button:disabled {
   padding: 30px;
   box-sizing: border-box;
 }
+
+.search-results {
+  position: absolute;
+  z-index: 10;
+}

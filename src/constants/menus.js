@@ -3,6 +3,7 @@ import LoginForm from "../components/loginForm";
 import MovieForm from "../components/movieForm";
 import Movies from "../components/movies/movies";
 import NotFound from "../components/notFound";
+import RegistrationForm from "../components/registerForm";
 import Rentals from "../components/rentals";
 
 export const MENUS = [
@@ -25,6 +26,18 @@ export const MENUS = [
     id: "login-form",
     path: "/login",
     component: LoginForm,
+  },
+  {
+    label: "Register",
+    id: "register-form",
+    path: "/register",
+    component: RegistrationForm,
+  },
+  {
+    label: "New Movie",
+    id: "new-movie-form",
+    path: "/movie/:new-movie",
+    component: MovieForm,
   },
   { label: null, id: "not-found", path: "/not-found", component: NotFound },
 ];

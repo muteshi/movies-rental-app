@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Joi from "joi-browser";
 import Input from "../components/common/input";
+import Select from "../components/common/select";
 
 const useForm = (schema) => {
   const [data, setData] = useState({});
@@ -25,7 +26,7 @@ const useForm = (schema) => {
     return error ? error.details[0].message : null;
   };
 
-  const handleChange = ({ currentTarget: input }) => {
+  const handleChange = ({ target: input }) => {
     const errorMsg = validateProperty(input);
     const newErrors = { ...errors };
     if (errorMsg) newErrors[input.name] = errorMsg;
@@ -62,14 +63,31 @@ const useForm = (schema) => {
         onChange={handleChange}
         value={data[name] || ""}
         label={label}
+        placeholder={label}
+      />
+    );
+  };
+
+  const renderSelect = (name, label, options) => {
+    return (
+      <Select
+        name={name}
+        value={data[name] || ""}
+        label={label}
+        options={options}
+        type="select"
+        onChange={handleChange}
+        error={errors[name]}
       />
     );
   };
 
   return {
     data,
+    setData,
     renderButton,
     renderInput,
+    renderSelect,
     handleSubmit,
   };
 };
