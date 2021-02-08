@@ -1,37 +1,27 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 
-const Search = ({ searchData }) => {
-  const [query, setQuery] = useState("");
-  const [results, setResults] = useState([]);
-
-  const handleClick = ({ target: input }) => {
-    const searchQuery = input.value;
-    setQuery(searchQuery.trim());
-
-    const searchResults = searchData.filter((item) =>
-      item.title.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-    setResults(searchResults);
-  };
-
+const Search = ({ results, handleClick, query, setQuery, redirectPath }) => {
   return (
     <form className="form-inline my-2 my-lg-0">
       <div>
         <input
           className="form-control mr-sm-2"
           type="search"
+          name="q"
           value={query}
           onChange={handleClick}
           placeholder="Search"
-          aria-label="Search"
         />
         {query.length !== 0 && (
           <div className="search-results">
-            <ul class="list-group">
+            <ul className="list-group">
               {results.map((res) => (
-                <li key={res._id} class="list-group-item">
-                  <Link to={`/movies/${res._id}`} onClick={() => setQuery("")}>
+                <li key={res._id} className="list-group-item">
+                  <Link
+                    to={`${redirectPath}/${res._id}`}
+                    onClick={() => setQuery("")}
+                  >
                     {res.title}
                   </Link>
                 </li>
@@ -47,4 +37,4 @@ const Search = ({ searchData }) => {
   );
 };
 
-export default Search;
+export default React.memo(Search);

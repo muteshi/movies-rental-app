@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { MENUS } from "../../constants/menus";
 import Search from "./searchBar";
 
-const NavBar = ({ data }) => {
+const NavBar = ({ query, results, searchClick, setQuery, redirectPath }) => {
   const [activeMenu, setActiveMenu] = useState("Movies");
 
   const handleClick = (menu) => {
@@ -48,10 +48,16 @@ const NavBar = ({ data }) => {
             return null;
           })}
         </ul>
-        <Search searchData={data} />
+        <Search
+          results={results}
+          query={query}
+          handleClick={searchClick}
+          setQuery={setQuery}
+          redirectPath={redirectPath}
+        />
       </div>
     </nav>
   );
 };
 
-export default NavBar;
+export default React.memo(NavBar);

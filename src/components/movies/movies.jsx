@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import _ from "lodash";
+import queryString from "query-string";
 
 import { getGenres } from "../../services/fakeGenreService";
 import { getMovies } from "../../services/fakeMovieService";
@@ -16,10 +17,14 @@ class Movies extends Component {
     movieCategories: [],
     selectedCategory: "All movies",
     sortColumn: { path: "title", order: "asc" },
+    searchQuery: null,
   };
 
   componentDidMount() {
+    let search = queryString.parse(this.props.location.search);
+    search = Object.keys(search).length === 0 ? "" : search.q;
     this.setState({
+      searchQuery: search,
       movies: getMovies(),
       movieCategories: [
         { name: "All movies", _id: "all_movies" },
@@ -52,21 +57,32 @@ class Movies extends Component {
     this.setState({ sortColumn });
   };
 
+  filterMovies = () => {
+    if (this.state.searchQuery)
+      return this.state.movies.filter((movie) =>
+        movie.title.toLowerCase().includes(this.state.searchQuery)
+      );
+
+    if (this.state.selectedCategory !== "All movies")
+      return this.state.movies.filter(
+        (movie) => movie.genre.name === this.state.selectedCategory
+      );
+    return this.state.movies;
+  };
+
   render() {
     const {
-      movies,
       itemsPerPage,
       currentPage,
       movieCategories,
       selectedCategory,
       sortColumn,
     } = this.state;
-    // console.log("RENDERING");
+    console.log(this.props);
 
-    const filteredMovies =
-      selectedCategory === "All movies"
-        ? movies
-        : movies.filter((movie) => movie.genre.name === selectedCategory);
+    const filteredMovies = this.filterMovies();
+
+    console.log(filteredMovies);
 
     const sortedMovies = _.orderBy(
       filteredMovies,
@@ -77,7 +93,7 @@ class Movies extends Component {
     const paginatedMovies = paginate(sortedMovies, currentPage, itemsPerPage);
 
     let moviesTable =
-      movies.length !== 0 ? (
+      filteredMovies.length !== 0 ? (
         <React.Fragment>
           <div className="row">
             <div className="col-sm-3">

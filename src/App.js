@@ -7,15 +7,33 @@ import { getMovies } from "./services/fakeMovieService";
 
 function App() {
   const [movies, setMovies] = useState([]);
+  const [query, setQuery] = useState("");
+  const [results, setResults] = useState([]);
 
   useEffect(() => {
     const movieData = getMovies();
     setMovies(movieData);
   }, []);
 
+  const handleClick = ({ target: input }) => {
+    const searchQuery = input.value;
+    setQuery(searchQuery.trim());
+
+    const searchResults = movies.filter((item) =>
+      item.title.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setResults(searchResults);
+  };
+
   return (
     <React.Fragment>
-      <NavBar data={movies} />
+      <NavBar
+        query={query}
+        results={results}
+        searchClick={handleClick}
+        setQuery={setQuery}
+        redirectPath="/movies"
+      />
       <main className="container">
         <Switch>
           {MENUS.map((menu) => (
@@ -33,4 +51,4 @@ function App() {
   );
 }
 
-export default App;
+export default React.memo(App);
