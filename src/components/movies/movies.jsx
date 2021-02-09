@@ -1,13 +1,15 @@
 import React, { Component } from "react";
 import _ from "lodash";
 import queryString from "query-string";
+import { toast } from "react-toastify";
 
-import { getGenres } from "../../services/fakeGenreService";
-import { getMovies } from "../../services/fakeMovieService";
+import { getGenres } from "../../services/genreService";
+import { deleteMovie, getMovies } from "../../services/movieService";
 import { paginate } from "../../utils/paginate";
 import ListGroup from "../common/listGroup";
 import Pagination from "../common/pagination";
 import MoviesTable from "../moviesTable";
+// import logger from "../../services/logService";
 
 class Movies extends Component {
   state = {
@@ -20,22 +22,31 @@ class Movies extends Component {
     searchQuery: null,
   };
 
-  componentDidMount() {
+  async componentDidMount() {
     let search = queryString.parse(this.props.location.search);
     search = Object.keys(search).length === 0 ? "" : search.q;
+    const { data: genres } = await getGenres();
+    const { data: movies } = await getMovies();
     this.setState({
       searchQuery: search,
-      movies: getMovies(),
-      movieCategories: [
-        { name: "All movies", _id: "all_movies" },
-        ...getGenres(),
-      ],
+      movies,
+      movieCategories: [{ name: "All movies", _id: "all_movies" }, ...genres],
     });
   }
 
-  handleDelete = (id) => {
-    const newMovies = this.state.movies.filter((movie) => movie._id !== id);
+  handleDelete = async (id) => {
+    const originalMovies = this.state.movies;
+    const newMovies = originalMovies.filter((movie) => movie._id !== id);
     this.setState({ movies: newMovies });
+    try {
+      const { data, status } = await deleteMovie(id);
+      if (status === 200) toast.success(`${data.title} successfully deleted`);
+    } catch (error) {
+      if (error && error.response.status === 404) {
+        toast.error("This movie has already been deleted");
+        this.setState({ movies: originalMovies });
+      }
+    }
   };
 
   handleLike = (movieId) => {
@@ -78,11 +89,8 @@ class Movies extends Component {
       selectedCategory,
       sortColumn,
     } = this.state;
-    console.log(this.props);
 
     const filteredMovies = this.filterMovies();
-
-    console.log(filteredMovies);
 
     const sortedMovies = _.orderBy(
       filteredMovies,

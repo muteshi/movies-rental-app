@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { ToastContainer } from "react-toastify";
 import { Redirect, Route, Switch } from "react-router-dom";
-import "./App.css";
 import NavBar from "./components/common/navBar";
 import { MENUS } from "./constants/menus";
-import { getMovies } from "./services/fakeMovieService";
+import { getMovies } from "./services/movieService";
+
+import "./App.css";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   const [movies, setMovies] = useState([]);
@@ -11,9 +14,13 @@ function App() {
   const [results, setResults] = useState([]);
 
   useEffect(() => {
-    const movieData = getMovies();
-    setMovies(movieData);
+    fetchMovies();
   }, []);
+
+  const fetchMovies = async () => {
+    const { data: movies } = await getMovies();
+    setMovies(movies);
+  };
 
   const handleClick = ({ target: input }) => {
     const searchQuery = input.value;
@@ -27,6 +34,7 @@ function App() {
 
   return (
     <React.Fragment>
+      <ToastContainer />
       <NavBar
         query={query}
         results={results}

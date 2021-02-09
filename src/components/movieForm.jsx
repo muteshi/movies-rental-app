@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useState } from "react";
 import useForm from "../hooks/useForm";
 import Joi from "joi-browser";
-import { getGenres } from "../services/fakeGenreService";
-import { getMovie, saveMovie } from "../services/fakeMovieService";
+import { getGenres } from "../services/genreService";
+import { getMovie, saveMovie } from "../services/movieService";
 
 const schema = {
   genreId: Joi.string(),
@@ -28,16 +28,30 @@ const MovieForm = ({ match, history }) => {
   const [movie, setMovie] = useState();
 
   useEffect(() => {
-    const newGenres = getGenres();
-    setGenres(newGenres);
+    fetchGenres();
   }, []);
 
+  const fetchGenres = async () => {
+    const { data: newGenres } = await getGenres();
+    setGenres(newGenres);
+  };
+
   useEffect(() => {
+    fetchMovie();
+  }, []);
+
+  const fetchMovie = async () => {
     const movieId = match.params.id;
-    const movie = getMovie(movieId);
-    if (!movie) return history.replace("/not found");
-    setMovie(movie);
-  }, [match, history]);
+    if (movieId === "new-movie") return;
+    try {
+      const { data: movie } = await getMovie(movieId);
+      setMovie(movie);
+    } catch (error) {
+      console.log(error);
+      if (error.response && error.response.status === 404)
+        history.replace("/not found");
+    }
+  };
 
   const setMovieForm = useCallback(() => {
     let movieForm = {
@@ -63,15 +77,15 @@ const MovieForm = ({ match, history }) => {
     setMovieForm();
   }, [setMovieForm]);
 
-  const doSubmit = () => {
+  const doSubmit = async () => {
     if (movie) {
       const newData = { ...data, _id: movie._id };
-      saveMovie(newData);
+      const res = await saveMovie(newData);
+      console.log(res);
       history.replace("/");
       return;
     }
-
-    saveMovie(data);
+    await saveMovie(data);
     history.replace("/");
   };
 

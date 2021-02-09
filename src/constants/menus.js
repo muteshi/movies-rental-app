@@ -36,7 +36,7 @@ export const MENUS = [
   {
     label: "New Movie",
     id: "new-movie-form",
-    path: "/movie/:new-movie",
+    path: "/movies/new-movie",
     component: MovieForm,
   },
   { label: null, id: "not-found", path: "/not-found", component: NotFound },
