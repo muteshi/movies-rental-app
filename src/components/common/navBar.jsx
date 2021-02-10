@@ -16,7 +16,7 @@ const NavBar = ({
   const handleClick = (menu) => {
     setActiveMenu(menu);
   };
-
+  console.log(user);
   const menus = user
     ? MENUS.filter((menu) => menu.showToLoggedInUser === true)
     : MENUS.filter((menu) => menu.private === false);

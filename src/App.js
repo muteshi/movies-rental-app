@@ -21,8 +21,13 @@ function App() {
   }, []);
 
   useEffect(() => {
-    setUser(getCurrentUser());
+    fetchUser();
   }, []);
+
+  const fetchUser = async () => {
+    const currentUser = await getCurrentUser();
+    setUser(currentUser);
+  };
 
   const fetchMovies = async () => {
     const { data: movies } = await getMovies();
