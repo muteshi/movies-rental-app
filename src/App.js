@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import { Redirect, Route, Switch } from "react-router-dom";
-import jwtDecode from "jwt-decode";
 
 import NavBar from "./components/common/navBar";
 import { MENUS } from "./constants/menus";
@@ -9,6 +8,7 @@ import { getMovies } from "./services/movieService";
 
 import "./App.css";
 import "react-toastify/dist/ReactToastify.css";
+import { getCurrentUser } from "./services/authService";
 
 function App() {
   const [movies, setMovies] = useState([]);
@@ -21,12 +21,8 @@ function App() {
   }, []);
 
   useEffect(() => {
-    try {
-      const jwt = localStorage.getItem("token");
-      const userData = jwtDecode(jwt);
-      setUser(userData);
-    } catch (error) {}
-  }, [setUser]);
+    setUser(getCurrentUser());
+  }, []);
 
   const fetchMovies = async () => {
     const { data: movies } = await getMovies();

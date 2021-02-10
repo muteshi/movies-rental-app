@@ -16,8 +16,7 @@ const LoginForm = (props) => {
 
   const doSubmit = async () => {
     try {
-      const { data: jwt } = await loginUser(data);
-      localStorage.setItem("token", jwt);
+      await loginUser(data);
       window.location = "/";
     } catch (error) {
       if (error.response && error.response.status === 400) {

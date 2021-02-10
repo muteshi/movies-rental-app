@@ -3,6 +3,7 @@ import useForm from "../hooks/useForm";
 import Joi from "joi-browser";
 import { saveUser } from "../services/userService";
 import { toast } from "react-toastify";
+import { loginWithJwt } from "../services/authService";
 
 const schema = {
   email: Joi.string().email().required().label("Email address"),
@@ -21,7 +22,7 @@ const RegistrationForm = (props) => {
       console.log(headers);
       if (status === 200) {
         toast.success("You have successfully created account");
-        localStorage.setItem("token", headers["x-auth-token"]);
+        loginWithJwt(headers["x-auth-token"]);
         window.location = "/";
       }
     } catch (error) {
