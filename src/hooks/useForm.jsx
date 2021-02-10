@@ -85,6 +85,7 @@ const useForm = (schema) => {
   return {
     data,
     setData,
+    setErrors,
     renderButton,
     renderInput,
     renderSelect,

@@ -1,6 +1,8 @@
 import React from "react";
 import useForm from "../hooks/useForm";
 import Joi from "joi-browser";
+import { saveUser } from "../services/userService";
+import { toast } from "react-toastify";
 
 const schema = {
   email: Joi.string().email().required().label("Email address"),
@@ -8,12 +10,23 @@ const schema = {
   password: Joi.string().min(5).required().label("Password"),
 };
 
-const RegistrationForm = () => {
-  const { data, handleSubmit, renderButton, renderInput } = useForm(schema);
+const RegistrationForm = (props) => {
+  const { data, setErrors, handleSubmit, renderButton, renderInput } = useForm(
+    schema
+  );
 
-  const doSubmit = () => {
-    console.log("submitted");
-    console.log(data);
+  const doSubmit = async () => {
+    try {
+      const { status } = await saveUser(data);
+      if (status === 200) {
+        toast.success("You have successfully created account");
+        props.history.replace("/login");
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 400) {
+        setErrors({ email: error.response.data });
+      }
+    }
   };
 
   const formSubmitHandler = (e) => handleSubmit(e, doSubmit());
