@@ -3,12 +3,21 @@ import { Link } from "react-router-dom";
 import { MENUS } from "../../constants/menus";
 import Search from "./searchBar";
 
-const NavBar = ({ query, results, searchClick, setQuery, redirectPath }) => {
+const NavBar = ({
+  query,
+  results,
+  searchClick,
+  setQuery,
+  user,
+  redirectPath,
+}) => {
   const [activeMenu, setActiveMenu] = useState("Movies");
 
   const handleClick = (menu) => {
     setActiveMenu(menu);
   };
+
+  const menus = user ? MENUS : MENUS.filter((menu) => menu.private === false);
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light mb-5">
@@ -29,7 +38,7 @@ const NavBar = ({ query, results, searchClick, setQuery, redirectPath }) => {
 
       <div className="collapse navbar-collapse" id="navbarSupportedContent">
         <ul className="navbar-nav mr-auto">
-          {MENUS.map((menu) => {
+          {menus.map((menu) => {
             const activeClassName =
               menu.label === activeMenu ? "nav-item active" : "nav-item";
             if (menu.label) {

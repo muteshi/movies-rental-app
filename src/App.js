@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import { Redirect, Route, Switch } from "react-router-dom";
+import jwtDecode from "jwt-decode";
+
 import NavBar from "./components/common/navBar";
 import { MENUS } from "./constants/menus";
 import { getMovies } from "./services/movieService";
@@ -12,10 +14,19 @@ function App() {
   const [movies, setMovies] = useState([]);
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
+  const [user, setUser] = useState({});
 
   useEffect(() => {
     fetchMovies();
   }, []);
+
+  useEffect(() => {
+    try {
+      const jwt = localStorage.getItem("token");
+      const userData = jwtDecode(jwt);
+      setUser(userData);
+    } catch (error) {}
+  }, [setUser]);
 
   const fetchMovies = async () => {
     const { data: movies } = await getMovies();
@@ -41,6 +52,7 @@ function App() {
         searchClick={handleClick}
         setQuery={setQuery}
         redirectPath="/movies"
+        user={user}
       />
       <main className="container">
         <Switch>
