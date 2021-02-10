@@ -22,7 +22,7 @@ const RegistrationForm = (props) => {
       if (status === 200) {
         toast.success("You have successfully created account");
         localStorage.setItem("token", headers["x-auth-token"]);
-        props.history.replace("/");
+        window.location = "/";
       }
     } catch (error) {
       if (error.response && error.response.status === 400) {

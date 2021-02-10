@@ -14,7 +14,7 @@ function App() {
   const [movies, setMovies] = useState([]);
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState();
 
   useEffect(() => {
     fetchMovies();

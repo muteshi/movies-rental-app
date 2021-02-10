@@ -18,7 +18,7 @@ const LoginForm = (props) => {
     try {
       const { data: jwt } = await loginUser(data);
       localStorage.setItem("token", jwt);
-      props.history.replace("/");
+      window.location = "/";
     } catch (error) {
       if (error.response && error.response.status === 400) {
         setErrors({ email: error.response.data });

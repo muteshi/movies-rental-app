@@ -17,7 +17,9 @@ const NavBar = ({
     setActiveMenu(menu);
   };
 
-  const menus = user ? MENUS : MENUS.filter((menu) => menu.private === false);
+  const menus = user
+    ? MENUS.filter((menu) => menu.showToLoggedInUser === true)
+    : MENUS.filter((menu) => menu.private === false);
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light mb-5">
