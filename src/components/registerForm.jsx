@@ -17,10 +17,12 @@ const RegistrationForm = (props) => {
 
   const doSubmit = async () => {
     try {
-      const { status } = await saveUser(data);
+      const { status, headers } = await saveUser(data);
+      console.log(headers);
       if (status === 200) {
         toast.success("You have successfully created account");
-        props.history.replace("/login");
+        localStorage.setItem("token", headers["x-auth-token"]);
+        props.history.replace("/");
       }
     } catch (error) {
       if (error.response && error.response.status === 400) {
