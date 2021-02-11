@@ -17,10 +17,8 @@ import RegistrationForm from "./components/registerForm";
 import Movies from "./components/movies/movies";
 import ProtectedRoute from "./components/protectedRoute";
 import NotFound from "./components/notFound";
-import useCurrentUser from "./hooks/getUser";
 
 function App(props) {
-  const { user } = useCurrentUser();
   const [movies, setMovies] = useState([]);
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
@@ -53,7 +51,6 @@ function App(props) {
         searchClick={handleClick}
         setQuery={setQuery}
         redirectPath="/movies"
-        user={user}
       />
       <main className="container">
         <Switch>

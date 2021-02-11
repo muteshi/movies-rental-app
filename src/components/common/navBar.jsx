@@ -1,24 +1,17 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { MENUS } from "../../constants/menus";
-import { getVisibleMenus } from "../../utils/utils";
+import auth from "../../services/authService";
 import Search from "./searchBar";
 
-const NavBar = ({
-  query,
-  results,
-  searchClick,
-  setQuery,
-  user,
-  redirectPath,
-}) => {
+const NavBar = ({ query, results, searchClick, setQuery, redirectPath }) => {
+  const user = auth.getCurrentUser();
   const [activeMenu, setActiveMenu] = useState("Movies");
 
   const handleClick = (menu) => {
     setActiveMenu(menu);
   };
-  console.log(user);
-  // const menus = getVisibleMenus(MENUS, user)
+
   const menus = user
     ? MENUS.filter((menu) => menu.showToLoggedInUser === true)
     : MENUS.filter((menu) => menu.private === false);

@@ -2,8 +2,7 @@ import React from "react";
 import Joi from "joi-browser";
 
 import useForm from "../hooks/useForm";
-import { loginUser } from "../services/authService";
-import useCurrentUser from "../hooks/getUser";
+import auth, { loginUser } from "../services/authService";
 import { Redirect } from "react-router-dom";
 
 const schema = {
@@ -12,7 +11,6 @@ const schema = {
 };
 
 const LoginForm = (props) => {
-  const { user } = useCurrentUser();
   const { data, setErrors, handleSubmit, renderButton, renderInput } = useForm(
     schema
   );
@@ -32,25 +30,25 @@ const LoginForm = (props) => {
   const formSubmitHandler = (e) => handleSubmit(e, doSubmit());
 
   //if user object is null set to an empty object
-  const currentUser = user === null ? {} : user;
+  // const user = user === null ? {} : user;
+  const user = auth.getCurrentUser();
 
-  const loginForm =
-    Object.keys(currentUser).length === 0 || user === null ? (
-      <div className="row">
-        <div className="col-sm-4" />
-        <div className="col-sm-4">
-          <h4 className="text-center">Login Form</h4>
-          <form className="auth" onSubmit={formSubmitHandler}>
-            {renderInput("email", "Email address")}
-            {renderInput("password", "Password", "password")}
-            {renderButton("Login")}
-          </form>
-        </div>
-        <div className="col-sm-4" />
+  const loginForm = !user ? (
+    <div className="row">
+      <div className="col-sm-4" />
+      <div className="col-sm-4">
+        <h4 className="text-center">Login Form</h4>
+        <form className="auth" onSubmit={formSubmitHandler}>
+          {renderInput("email", "Email address")}
+          {renderInput("password", "Password", "password")}
+          {renderButton("Login")}
+        </form>
       </div>
-    ) : (
-      <Redirect to="/" />
-    );
+      <div className="col-sm-4" />
+    </div>
+  ) : (
+    <Redirect to="/" />
+  );
 
   return loginForm;
 };

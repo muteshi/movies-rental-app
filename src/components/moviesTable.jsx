@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import auth from "../services/authService";
 import Delete from "./common/delete";
 import Like from "./common/like";
 import Table from "./common/table";
@@ -11,6 +12,7 @@ const MoviesTable = ({
   onSort,
   sortColumn,
 }) => {
+  const user = auth.getCurrentUser();
   const columns = [
     {
       path: "title",
@@ -32,17 +34,23 @@ const MoviesTable = ({
         <Like like={movie.liked} onLike={() => onLike(movie._id)} />
       ),
     },
-    {
-      path: null,
-      label: "Action",
-      content: (movie) => <Delete onDelete={onDelete} movie={movie} />,
-    },
   ];
+
+  const deleteColumn = {
+    path: null,
+    label: "Action",
+    content: (movie) => <Delete onDelete={onDelete} movie={movie} />,
+  };
+
+  // if (user && user.isAdmin) return columns.concat(deleteColumn);
+
+  const newColumns =
+    user && user.isAdmin ? columns.concat(deleteColumn) : columns;
 
   return (
     <Table
       data={paginatedMovies}
-      columns={columns}
+      columns={newColumns}
       onDelete={onDelete}
       onLike={onLike}
       sortColumn={sortColumn}

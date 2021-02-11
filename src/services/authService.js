@@ -12,22 +12,22 @@ export async function loginUser(credentials) {
   localStorage.setItem(tokenKey, jwt);
 }
 
-export async function loginWithJwt(jwt) {
+export function loginWithJwt(jwt) {
   localStorage.setItem(tokenKey, jwt);
 }
 
-export async function getJwt() {
+export function getJwt() {
   return localStorage.getItem(tokenKey);
 }
 
-export async function logout() {
+export function logout() {
   localStorage.removeItem(tokenKey);
 }
 
-export async function getCurrentUser() {
+export function getCurrentUser() {
   try {
     const jwt = localStorage.getItem(tokenKey);
-    return await jwtDecode(jwt);
+    return jwtDecode(jwt);
   } catch (error) {
     return null;
   }
