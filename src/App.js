@@ -8,7 +8,6 @@ import { getMovies } from "./services/movieService";
 
 import "./App.css";
 import "react-toastify/dist/ReactToastify.css";
-import { getCurrentUser } from "./services/authService";
 import LoginForm from "./components/loginForm";
 import Logout from "./components/logout";
 import Customers from "./components/customers";
@@ -18,25 +17,17 @@ import RegistrationForm from "./components/registerForm";
 import Movies from "./components/movies/movies";
 import ProtectedRoute from "./components/protectedRoute";
 import NotFound from "./components/notFound";
+import useCurrentUser from "./hooks/getUser";
 
 function App(props) {
+  const { user } = useCurrentUser();
   const [movies, setMovies] = useState([]);
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
-  const [user, setUser] = useState();
 
   useEffect(() => {
     fetchMovies();
   }, []);
-
-  useEffect(() => {
-    fetchUser();
-  }, []);
-
-  const fetchUser = async () => {
-    const currentUser = await getCurrentUser();
-    setUser(currentUser);
-  };
 
   const fetchMovies = async () => {
     const { data: movies } = await getMovies();
