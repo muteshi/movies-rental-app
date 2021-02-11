@@ -27,8 +27,14 @@ export async function logout() {
 export async function getCurrentUser() {
   try {
     const jwt = localStorage.getItem(tokenKey);
-    return jwtDecode(jwt);
+    return await jwtDecode(jwt);
   } catch (error) {
     return null;
   }
 }
+
+const auth = {
+  getCurrentUser,
+};
+
+export default auth;

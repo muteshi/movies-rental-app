@@ -14,10 +14,12 @@ const LoginForm = (props) => {
     schema
   );
 
+  // console.log(props.location);
   const doSubmit = async () => {
     try {
       await loginUser(data);
-      window.location = "/";
+      const { state } = props.location;
+      window.location = state ? state.from.pathname : "/";
     } catch (error) {
       if (error.response && error.response.status === 400) {
         setErrors({ email: error.response.data });

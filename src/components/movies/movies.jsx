@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 
 import { getGenres } from "../../services/genreService";
 import { deleteMovie, getMovies } from "../../services/movieService";
-import { paginate } from "../../utils/paginate";
+import { paginate } from "../../utils/utils";
 import ListGroup from "../common/listGroup";
 import Pagination from "../common/pagination";
 import MoviesTable from "../moviesTable";

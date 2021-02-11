@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { MENUS } from "../../constants/menus";
+import { getVisibleMenus } from "../../utils/utils";
 import Search from "./searchBar";
 
 const NavBar = ({
@@ -17,6 +18,7 @@ const NavBar = ({
     setActiveMenu(menu);
   };
   console.log(user);
+  // const menus = getVisibleMenus(MENUS, user)
   const menus = user
     ? MENUS.filter((menu) => menu.showToLoggedInUser === true)
     : MENUS.filter((menu) => menu.private === false);

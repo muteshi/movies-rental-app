@@ -80,8 +80,7 @@ const MovieForm = ({ match, history }) => {
   const doSubmit = async () => {
     if (movie) {
       const newData = { ...data, _id: movie._id };
-      const res = await saveMovie(newData);
-      console.log(res);
+      await saveMovie(newData);
       history.replace("/");
       return;
     }

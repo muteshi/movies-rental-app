@@ -3,19 +3,10 @@ import LoginForm from "../components/loginForm";
 import Logout from "../components/logout";
 import MovieForm from "../components/movieForm";
 import Movies from "../components/movies/movies";
-import NotFound from "../components/notFound";
 import RegistrationForm from "../components/registerForm";
 import Rentals from "../components/rentals";
 
 export const MENUS = [
-  {
-    label: null,
-    id: "movie-details",
-    path: "/movies/:id",
-    private: true,
-    showToLoggedInUser: true,
-    component: MovieForm,
-  },
   {
     label: "Movies",
     private: false,
@@ -71,13 +62,5 @@ export const MENUS = [
     showToLoggedInUser: true,
     path: "/movies/new-movie",
     component: MovieForm,
-  },
-  {
-    label: null,
-    private: false,
-    showToLoggedInUser: true,
-    id: "not-found",
-    path: "/not-found",
-    component: NotFound,
   },
 ];
